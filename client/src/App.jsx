@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
@@ -17,11 +17,24 @@ import ShoppingCheckout from "./pages/shopping-view/checkout";
 import ShoppingAccount from "./pages/shopping-view/account";
 import CheckAuth from "./components/common/check-auth";
 import UnauthPage from "./pages/unauth-page";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "./store/auth-slice";
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 const App = () => {
-  const isAuthenticated = false;
-  const user = null
+  const { user, isAuthenticated,isLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+   dispatch(checkAuth())
+  }, [dispatch])
   
+  if(isLoading) return <Skeleton  className="w-[800] bg-black h-[600px]" />
+
+  
+  
+
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
@@ -62,7 +75,7 @@ const App = () => {
           <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="account" element={<ShoppingAccount />} />
         </Route>
-        <Route path="/unauth-page" element={<UnauthPage/>}/>
+        <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
