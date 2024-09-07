@@ -57,6 +57,7 @@ export const loginUser = async (req, res) => {
         id: validUser._id,
         role: validUser.role,
         email: validUser.email,
+        userName:validUser.userName
       },
       process.env.SECRET_KEY,
       {
