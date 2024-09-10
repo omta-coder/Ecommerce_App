@@ -10,6 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config";
+import { useToast } from "@/hooks/use-toast";
+import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import {
   fetchAllFilteredProducts,
   fetchProductDetails,
@@ -40,10 +42,13 @@ const ShoppingListing = () => {
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+  const { cartItems } = useSelector((state) => state.shopCart);
+  const { user } = useSelector((state) => state.auth);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
   const [searchParams, setSeachParams] = useSearchParams();
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const {toast} = useToast()
 
   const handleSort = (value) => {
     console.log(value);
@@ -76,6 +81,24 @@ const ShoppingListing = () => {
     dispatch(fetchProductDetails(getCurrentProductId));
   };
 
+  const handleAddtoCart = (getCurrentProductId) => {
+    console.log(getCurrentProductId);
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: getCurrentProductId,
+        quantity: 1,
+      })
+    ).then((data) => {
+      if(data?.payload?.success){
+        dispatch(fetchCartItems(user?.id));
+        toast({
+          title: "Product is added to cart",
+        })
+      }
+    });
+  };
+
   useEffect(() => {
     setSort("price-lowtohigh");
     setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
@@ -102,7 +125,8 @@ const ShoppingListing = () => {
     }
   }, [productDetails]);
 
-  console.log(productDetails, "productDetails");
+  console.log(cartItems,"cartItems");
+  
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
@@ -146,6 +170,7 @@ const ShoppingListing = () => {
               <ShoppingProductTile
                 handleGetProductDetails={handleGetProductDetails}
                 product={productItem}
+                handleAddtoCart={handleAddtoCart}
               />
             ))
           ) : (
