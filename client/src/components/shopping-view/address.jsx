@@ -31,6 +31,15 @@ const Address = () => {
   const handleManageAddress = (e) => {
     e.preventDefault();
 
+    if(addressList.length >= 3 && currentEditedId === null){
+      setformData(initialAddressFormData)
+      toast({
+        title: "You can add max 3 addresses",
+        variant: "destructive",
+      });
+      return;
+    }
+
     currentEditedId !== null
       ? dispatch(
           editaAddress({
@@ -101,7 +110,7 @@ const Address = () => {
 
   return (
     <Card>
-      <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2  gap-2">
+      <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
         {addressList && addressList.length > 0
           ? addressList.map((singleAddressItem) => (
               <AddressCard
