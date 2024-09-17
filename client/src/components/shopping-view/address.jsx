@@ -20,7 +20,7 @@ const initialAddressFormData = {
   notes: "",
 };
 
-const Address = () => {
+const Address = ({ setCurrentSelectedAddress, selectedId }) => {
   const [formData, setformData] = useState(initialAddressFormData);
   const [currentEditedId, setCurrentEditedId] = useState(null);
   const dispatch = useDispatch();
@@ -31,8 +31,8 @@ const Address = () => {
   const handleManageAddress = (e) => {
     e.preventDefault();
 
-    if(addressList.length >= 3 && currentEditedId === null){
-      setformData(initialAddressFormData)
+    if (addressList.length >= 3 && currentEditedId === null) {
+      setformData(initialAddressFormData);
       toast({
         title: "You can add max 3 addresses",
         variant: "destructive",
@@ -114,9 +114,11 @@ const Address = () => {
         {addressList && addressList.length > 0
           ? addressList.map((singleAddressItem) => (
               <AddressCard
+                selectedId={selectedId}
                 handleDeleteAddress={handleDeleteAddress}
                 handleEditAddress={handleEditAddress}
                 addressInfo={singleAddressItem}
+                setCurrentSelectedAddress={setCurrentSelectedAddress}
               />
             ))
           : null}

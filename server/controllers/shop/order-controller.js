@@ -84,8 +84,8 @@ export const createOrder = async (req, res) => {
           });
         }
       });
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error.message);
       res.status(500).json({
         success: false,
         message: "Some error occured!",
