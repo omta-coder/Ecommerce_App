@@ -1,12 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
 import { Button } from '../ui/button'
 import { Dialog } from '../ui/dialog'
 import ShoppingOrderDetailsView from './order-details'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllOrdersByUserId } from '@/store/shop/order-slice'
 
 const ShoppingOrders = () => {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const dispatch = useDispatch();
+  const {user} = useSelector((state)=>state.auth);
+  const { orderList, orderDetails } = useSelector((state) => state.shopOrder);
+
+  useEffect(()=>{
+    dispatch(getAllOrdersByUserId(user?.id))
+  },[dispatch]);
+
+
+  console.log(orderList, "orderDetails");
   return (
     <Card>
       <CardHeader>
