@@ -54,7 +54,7 @@ const ShoppingOrders = () => {
           </TableHeader>
           <TableBody>
             {orderList && orderList.length > 0
-              ? orderList.map((item) => (
+              ? orderList.map((orderItem) => (
                   <TableRow>
                     <TableCell>{orderItem?._id}</TableCell>
                     <TableCell>{orderItem?.orderDate.split("T")[0]}</TableCell>
