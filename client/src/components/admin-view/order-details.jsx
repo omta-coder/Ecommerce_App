@@ -22,6 +22,9 @@ const AdminOrderDetailsView = ({ orderDetails }) => {
   const dispatch = useDispatch();
   const { toast } = useToast();
 
+  console.log(orderDetails,"orderDetailsorderDetails");
+  
+
   const handleUpdateStatus = (e) => {
     e.preventDefault();
     console.log(formData);
