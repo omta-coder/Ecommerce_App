@@ -13,6 +13,8 @@ import adminOrderRouter from './routes/admin/order-routes.js'
 import shopSearchRouter from './routes/shop/search-routes.js'
 import shopReviewRouter from './routes/shop/review-routes.js'
 
+import commonFeatureRouter from './routes/common/feature-routes.js'
+
 mongoose
   .connect(process.env.MONGODB)
   .then(() => {
@@ -25,7 +27,7 @@ mongoose
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(cors({
-    origin:'http://localhost:5173',
+    origin:process.env.CLIENT_BASE_URL,
     methods:['GET','POST','DELETE','PUT'],
     allowedHeaders:[
         "Content-Type",
@@ -47,6 +49,8 @@ app.use("/api/shop/address",shopAddressRouter);
 app.use("/api/shop/order", shopOrderRouter);
 app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
+
+app.use("/api/common/feature", commonFeatureRouter);
 
 
 app.listen(PORT, () => {
